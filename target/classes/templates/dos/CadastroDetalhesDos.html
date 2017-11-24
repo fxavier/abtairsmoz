@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	layout:decorate="~{layout/LayoutPadrao}">
+
+<head>
+	<title>Cadastro de Dos</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/airsMozTotais-table.css}"/>
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-10">
+					<h1>Ficha do Chefe de Equipa para a Verificação da Qualidade da Pulverização(Detalhes)</h1>
+				</div>
+			
+				<div class="col-sm-2">
+					<div class="aw-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/detalhesDos}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisar</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<div class="container-fluid">
+    <th:block th:include="fragments/MensagemSucesso"></th:block>
+    <form method="POST" th:object="${detalheDos}" th:action="@{/detalhesDos/novo}">
+      <th:block th:include="fragments/MensagensErroValidacao"></th:block>
+		  <input type="hidden" th:field="*{codigo}"/>
+		  
+		  <div class="row">	
+		     <div class="form-group  col-sm-4 bw-required" th:classappend="${#fields.hasErrors('data')} ? has-error">
+					<label class="control-label" for="data">Data</label>
+					<input type="text" class="form-control" id="data" th:field="*{data}" 
+					 data-provide="datepicker" data-date-orientation="bottom" data-date-language="pt-BR"
+					 data-date-today-highlight="true" data-date-autoclose="true" autocomplete="off"/>
+			</div>
+			 
+			    <div class="col-sm-4  form-group bw-required" th:classappend="${#fields.hasErrors('distrito')} ? has-error">
+			      <label for="distrito" class="control-label" >Distrito</label>
+			       <select id="distrito" class="form-control" th:field="*{distrito}" >
+			         <option value="">Selecione o distrito</option> 
+			         <option th:each="distrito : ${distritos}" th:value="${distrito.codigo}" th:text="${distrito.nome}"></option>
+			       </select> 
+			   </div> 
+				
+			    <div class="col-sm-4  form-group bw-required"  th:classappend="${#fields.hasErrors('localidade')} ? has-error">
+			      <label for="localidade" class="control-label" >Localidade</label>
+			      <div class="bw-field-action">
+			       <input type="hidden" id="inputHiddenLocalidadeSelecionada" th:value="*{localidade} != null ? *{localidade.codigo}"/>
+			       <select id="localidade" class="form-control" data:url="@{/localidades}" th:field="*{localidade}">			         
+			           
+			       </select> 
+			       <div class="bw-field-action__icon js-img-Loading" style="display: none">
+			          <img th:src="@{/images/mini-loading.gif}"/>		       
+			       </div>
+			       </div>
+			    </div> 
+			    
+			    <div class="col-sm-4  form-group bw-required"  th:classappend="${#fields.hasErrors('bairro')} ? has-error">
+			      <label for="bairro" class="control-label" >Bairro</label>
+			      <div class="bw-field-action">
+			       <input type="hidden" id="inputHiddenBairroSelecionado" th:value="*{bairro} != null ? *{bairro.codigo}"/>
+			       <select id="bairro" class="form-control" data:url="@{/bairros}" th:field="*{bairro}">		         
+			     
+			       </select> 
+			       <div class="bw-field-action__icon js-img-Loading" style="display: none">
+			          <img th:src="@{/images/mini-loading.gif}"/>		       
+			       </div>
+			       </div>
+			    </div> 
+			    
+			    <div class="col-sm-4  form-group bw-required" th:classappend="${#fields.hasErrors('teamLeaderOuChefeBrigada')} ? has-error">
+			      <label for="actorType" class="control-label" >Chefe da equipe/Supervisor da brigada</label>
+			       <select id="actorType" class="form-control" th:field="*{teamLeaderOuChefeBrigada}" >
+			         <option value="">Selecione</option> 
+			         <option th:each="actorType : ${actorTypes}" th:value="${actorType.codigo}" th:text="${actorType.nome}"></option>
+			       </select> 
+			    </div> 
+			    
+			    
+			    <div class="col-sm-4  form-group bw-required"  th:classappend="${#fields.hasErrors('teamLeaderOuChefeBrigada')} ? has-error">
+			      <label for="actor" class="control-label" >Nome</label>
+			      <div class="bw-field-action">
+			       <input type="hidden" id="inputHiddenActorSelecionado" th:value="*{teamLeaderOuChefeBrigada} != null ? *{teamLeaderOuChefeBrigada.codigo}"/>
+			       <select id="actor" class="form-control" data:url="@{/actores}" th:field="*{teamLeaderOuChefeBrigada}">			         
+			     
+			       </select> 
+			       <div class="bw-field-action__icon js-img-Loading" style="display: none">
+			          <img th:src="@{/images/mini-loading.gif}"/>		       
+			       </div>
+			       </div>
+			    </div> 
+		    	    
+			   
+		 </div> 
+			 <div class="row">
+			   
+			   <div class="table-responsive  bw-tabela-simples">
+	                   <table class="table  table-hover">
+	                      <thead>
+		                    <tr>
+		                      <th>Nome do rociador</th>
+		                      <th>O Roceador misturou o insecticida de modo a fazer 7.5 litros?</th>
+		                      <th>O Roceador enxaguou 3 vezes a garrafa do Actellic vazia com água?</th>
+		                      <th>O Roceador tem o EPI completo?</th>
+		                      <th>O Roceador esta a pulverizar com a bomba contendo a válvula de controlo de fluxo?</th>
+		                      <th>Todos Pertences, Comida, animais/pessoas doentes foram tirados para fora da casa?</th>
+		                      <th>Todos pertences que não podem ser tirados/removidos para fora foram cobertos com plástico? </th>
+		                      <th>Existem vazamento na bomba?</th>
+		                      <th>O Roceador esta pulverizando com 45 cm de distancia do bico a parede?</th>
+		                      <th>O Roceador esta a manter a velocidade correcta de pulverização. Isto é,  2 metros de superfície da parede vertical em 5 segundos?</th>
+		                      <th>Existe uma sobreposição de 5 cm  em cada faixa consecutiva?</th>
+		                    </tr>                    
+	                       </thead>
+		                   <tbody>
+		                       <tr>
+		                       
+		                          <td>
+		                              <select id="roceador" class="form-control" th:field="*{roceador}" >
+								         <option value="">Selecione</option> 
+								         <option th:each="actor : ${actores}" th:value="${actor.codigo}" th:text="${actor.nome}"></option>
+								       </select> 
+		                          </td>
+		                         <td>
+		                            
+		                             <select id="sopMixFor75" class="form-control" th:field="*{sopMixFor75}" >
+			                          <option value="">Opções</option> 
+			                          <option th:value="Sim">Sim</option>
+			                          <option th:value="Nao">Não</option>
+			                         </select>
+			                    
+		                         
+		                         </td>
+		                          <td>
+		                           <select id="sopEnxaugou3vezes" class="form-control" th:field="*{sopEnxaugou3vezes}" >
+			                          <option value="">Opções</option> 
+			                          <option th:value="Sim">Sim</option>
+			                          <option th:value="Nao">Não</option>
+			                        </select>		                         
+		                         </td>     
+		                         <td>
+		                           <select id="sopTemEPICompleto" class="form-control" th:field="*{sopTemEPICompleto}" >
+			                          <option value="">Opções</option> 
+			                          <option th:value="Sim">Sim</option>
+			                          <option th:value="Nao">Não</option>
+			                        </select>		                         
+		                         </td>  
+		                         
+		                         <td>
+		                           <select id="sopPulvComBombaComCntFluxo" class="form-control" th:field="*{sopPulvComBombaComCntFluxo}" >
+			                          <option value="">Opções</option> 
+			                          <option th:value="Sim">Sim</option>
+			                          <option th:value="Nao">Não</option>
+			                        </select>		                         
+		                         </td>  
+		                         
+		                         <td>
+		                           <select id="todosPertencesForaCasa" class="form-control" th:field="*{todosPertencesForaCasa}" >
+			                          <option value="">Opções</option> 
+			                          <option th:value="Sim">Sim</option>
+			                          <option th:value="Nao">Não</option>
+			                        </select>		                         
+		                         </td>  
+		                         
+		                         <td>
+		                           <select id="todosPertencesNTiradosCobertos" class="form-control" th:field="*{todosPertencesNTiradosCobertos}" >
+			                          <option value="">Opções</option> 
+			                          <option th:value="Sim">Sim</option>
+			                          <option th:value="Nao">Não</option>
+			                        </select>		                         
+		                         </td>    
+		                         
+		                         <td>
+		                           <select id="existeVazamentoBomba" class="form-control" th:field="*{existeVazamentoBomba}" >
+			                          <option value="">Opções</option> 
+			                          <option th:value="Sim">Sim</option>
+			                          <option th:value="Nao">Não</option>
+			                        </select>		                         
+		                         </td>      
+		                         
+		                         <td>
+		                           <select id="sopPulvComDist45cmParede" class="form-control" th:field="*{sopPulvComDist45cmParede}" >
+			                          <option value="">Opções</option> 
+			                          <option th:value="Sim">Sim</option>
+			                          <option th:value="Nao">Não</option>
+			                        </select>		                         
+		                         </td>      
+		                         
+		                         <td>
+		                           <select id="sopMantemVelocCorrecta" class="form-control" th:field="*{sopMantemVelocCorrecta}" >
+			                          <option value="">Opções</option> 
+			                          <option th:value="Sim">Sim</option>
+			                          <option th:value="Nao">Não</option>
+			                        </select>		                         
+		                         </td>      
+		                         
+		                         <td>
+		                           <select id="existeSubreposicao5cm" class="form-control" th:field="*{existeSubreposicao5cm}" >
+			                          <option value="">Opções</option> 
+			                          <option th:value="Sim">Sim</option>
+			                          <option th:value="Nao">Não</option>
+			                        </select>		                         
+		                         </td>    		                         
+		                         		                        
+		                       </tr>		                       
+		                      
+		                     </tbody>
+		                     
+		                     
+		                    
+                    </table>
+                 </div>  
+			 
+			 </div> 
+			  <button class="btn btn-primary ">Lançar</button>
+			 			  		
+	</form>
+   </div>
+  </section>
+  <th:block layout:fragment="javascript-extra">
+   	<script th:src="@{/javascripts/mozirs.combos-distrito-localidade-bairro.js}"></script>
+   	<script th:src="@{/javascripts/mozirs.combo-actortype-actor.js}"></script>   
+	<script th:src="@{/javascripts/dos.butoes.js}"></script>  
+   	
+</th:block>
+ </html>  			  

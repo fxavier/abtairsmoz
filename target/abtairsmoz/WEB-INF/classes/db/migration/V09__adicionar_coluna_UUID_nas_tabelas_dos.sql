@@ -1,0 +1,2 @@
+ALTER TABLE detalhes_tldos
+ADD UUID VARCHAR(250) NOT NULL;
