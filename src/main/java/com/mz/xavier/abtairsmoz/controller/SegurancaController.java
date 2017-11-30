@@ -10,9 +10,9 @@ public class SegurancaController {
 
 	@GetMapping("/login")
 	public String login(@AuthenticationPrincipal User user) {
-		/*if (user != null) {
+		if (user != null) {
 			return "redirect:/";
-		}*/
+		}
 		
 		return "Login";
 	}

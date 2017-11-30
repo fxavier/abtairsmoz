@@ -28,7 +28,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService);
+		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+		/*auth.inMemoryAuthentication()
+		     .withUser("admin@africairs.net").password("admin").roles("CADASTRAR_DISTRITO");*/
+		
 	}
 	
 	@Override
@@ -44,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			    .authorizeRequests()
 		     	.antMatchers("/distritos/novo").hasRole("CADASTRAR_DISTRITO")
 		     	.antMatchers("/localidades/nova").hasRole("CADASTRAR_LOCALIDADE")
-		     	.antMatchers("/BAIRROS/novo").hasRole("CADASTRAR_BAIRRO")
+		     	.antMatchers("/bairros/novo").hasRole("CADASTRAR_BAIRRO")
 			    .antMatchers("/usuarios").hasRole("CADASTRAR_USUARIOS")
 			  	.anyRequest().authenticated()
 				.and()
@@ -61,6 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.sessionManagement()
 				.invalidSessionUrl("/login");
 		}
+	
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
