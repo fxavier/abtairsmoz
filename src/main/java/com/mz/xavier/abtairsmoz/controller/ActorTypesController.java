@@ -22,6 +22,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.mz.xavier.abtairsmoz.controller.page.PageWrapper;
+import com.mz.xavier.abtairsmoz.model.ActorType;
+import com.mz.xavier.abtairsmoz.repository.ActorTypes;
+import com.mz.xavier.abtairsmoz.repository.exception.CadastroActorTypeException;
+import com.mz.xavier.abtairsmoz.repository.exception.ImpossivelExcluirEntidadeException;
+import com.mz.xavier.abtairsmoz.repository.filter.ActorTypeFilter;
+import com.mz.xavier.abtairsmoz.service.CadastroActorTypeService;
+
 /**
  * @author langar
  *
@@ -30,7 +38,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/actorTypes")
 public class ActorTypesController {
 	
-	/*@Autowired
+	@Autowired
 	private CadastroActorTypeService cadastroActorTypeService;
 	
 	@Autowired
@@ -91,6 +99,6 @@ public class ActorTypesController {
 		return ResponseEntity.ok().build();
 	}
 	
-	*/
+	
 
 }
