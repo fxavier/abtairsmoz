@@ -16,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -39,82 +41,122 @@ public class TotaisTlDos implements Serializable{
 	private LocalDate data;
 	
 	@NotNull(message = "Esse campo é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
 	@Column(name = "SOPMixFor75Sim")
 	private Long sopMixFor75Sim;
 	
 	@NotNull(message = "Esse campo é obrigatório")	
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
 	@Column(name = "SOPMixFor75Nao")
 	private Long sopMixFor75Nao;
 	
 	@NotNull(message = "Esse campo é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
 	@Column(name = "SOPEnxaugou3vezesSim")
 	private Long sopEnxaugou3vezesSim;
 	
 	@NotNull(message = "Esse campo é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
 	@Column(name = "SOPEnxaugou3vezesNao")
 	private Long sopEnxaugou3vezesNao;
 	
 	@NotNull(message = "Esse campo é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
 	@Column(name = "SOPTemEPICompletoSim")
 	private Long sopTemEPICompletoSim;
 	
 	@NotNull(message = "Esse campo é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
 	@Column(name = "SOPTemEPICompletoNao")
 	private Long sopTemEPICompletoNao;
 	
 	@NotNull(message = "Esse campo é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
 	@Column(name = "SOPPulvComBombaComCntFluxoSim")
 	private Long sopPulvComBombaComCntFluxoSim;
 	
 	@NotNull(message = "Esse campo é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
 	@Column(name = "SOPPulvComBombaComCntFluxoNao")
 	private Long sopPulvComBombaComCntFluxoNao;
 	
 	@NotNull(message = "Esse campo é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
 	@Column(name = "todosPertencesForaCasaSim")
 	private Long todosPertencesForaCasaSim;
 	
 	@NotNull(message = "Esse campo é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
 	@Column(name = "todosPertencesForaCasaNao")
 	private Long todosPertencesForaCasaNao;
 	
 	@NotNull(message = "Esse campo é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
 	@Column(name = "todosPertencesNTiradosCobertosSim")
 	private Long todosPertencesNTiradosCobertosSim;
 	
 	@NotNull(message = "Esse campo é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
 	@Column(name = "todosPertencesNTiradosCobertosNao")
 	private Long todosPertencesNTiradosCobertosNao;
 	
 	@NotNull(message = "Esse campo é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
 	@Column(name = "existeVazamentoBombaSim")
 	private Long existeVazamentoBombaSim;
 	
 	@NotNull(message = "Esse campo é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
 	@Column(name = "existeVazamentoBombaNao")
 	private Long existeVazamentoBombaNao;
 	
 	@NotNull(message = "Esse campo é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
 	@Column(name = "SOPPulvComDist45cmParedeSim")
 	private Long sopPulvComDist45cmParedeSim;
 	
 	@NotNull(message = "Esse campo é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
 	@Column(name = "SOPPulvComDist45cmParedeNao")
 	private Long sopPulvComDist45cmParedeNao;
 	
 	@NotNull(message = "Esse campo é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
 	@Column(name = "SOPMantemVelocCorrectaSim")
 	private Long sopMantemVelocCorrectaSim;
 	
 	@NotNull(message = "Esse campo é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
 	@Column(name = "SOPMantemVelocCorrectaNao")
 	private Long sopMantemVelocCorrectaNao;
 	
 	@NotNull(message = "Esse campo é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
 	@Column(name = "existeSubreposicao5cmSim")
 	private Long existeSubreposicao5cmSim;
 	
 	@NotNull(message = "Esse campo é obrigatório")
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
 	@Column(name = "existeSubreposicao5cmNao")
 	private Long existeSubreposicao5cmNao;
 	

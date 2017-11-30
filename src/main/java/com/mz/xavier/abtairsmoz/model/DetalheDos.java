@@ -68,6 +68,7 @@ public class DetalheDos implements Serializable{
 	
 	@Column(name = "SOPMixFor75")
 	@NotNull(message = "Todos os campos sao obrigatorios")
+	
 	private String sopMixFor75;
 	
 	@Column(name = "SOPEnxaugou3vezes")
