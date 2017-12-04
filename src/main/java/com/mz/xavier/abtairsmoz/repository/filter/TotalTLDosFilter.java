@@ -27,9 +27,8 @@ public class TotalTLDosFilter {
 	
 	private Actor actor;
 	
-	private LocalDate dataInicio;
+	private LocalDate data;
 	
-	private LocalDate dataFim;
 
 	public Distrito getDistrito() {
 		return distrito;
@@ -71,21 +70,14 @@ public class TotalTLDosFilter {
 		this.actor = actor;
 	}
 
-	public LocalDate getDataInicio() {
-		return dataInicio;
+	public LocalDate getData() {
+		return data;
 	}
 
-	public void setDataInicio(LocalDate dataInicio) {
-		this.dataInicio = dataInicio;
+	public void setData(LocalDate data) {
+		this.data = data;
 	}
 
-	public LocalDate getDataFim() {
-		return dataFim;
-	}
-
-	public void setDataFim(LocalDate dataFim) {
-		this.dataFim = dataFim;
-	}
 	
 	
 

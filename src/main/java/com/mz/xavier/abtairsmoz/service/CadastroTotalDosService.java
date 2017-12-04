@@ -22,8 +22,10 @@ public class CadastroTotalDosService {
 	
 	@Transactional
 	public void salvar(TotaisTlDos totaisTlDos) {
+		
 		totalTLDoses.save(totaisTlDos);
 	}
 	
+		
 	
 }

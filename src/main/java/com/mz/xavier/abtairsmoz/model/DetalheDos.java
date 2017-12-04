@@ -42,11 +42,13 @@ public class DetalheDos implements Serializable{
 	@NotNull(message = "A data é obrigatória")
 	private LocalDate data;
 	
-	@Transient
+	@ManyToOne
+	@JoinColumn(name = "codigo_distrito")
 	@NotNull(message = "O distrito é obrigatório")
 	private Distrito distrito;
 	
-	@Transient
+	@ManyToOne
+	@JoinColumn(name = "codigo_localidade")
 	@NotNull(message = "A Localidade é obrigatória")
 	private Localidade localidade;
 	

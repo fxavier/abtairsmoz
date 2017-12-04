@@ -165,11 +165,13 @@ public class TotaisTlDos implements Serializable{
 	@NotNull(message = "O Nome do lider é obrigatório")
 	private Actor teamLeaderOuChefeBrigada;
 	
-	@Transient
+	@ManyToOne
+	@JoinColumn(name = "codigo_distrito")
 	@NotNull(message = "O distrito é obrigatório")
 	private Distrito distrito;
 	
-	@Transient
+	@ManyToOne
+	@JoinColumn(name = "codigo_localidade")
 	@NotNull(message = "A Localidade é obrigatória")
 	private Localidade localidade;
 	

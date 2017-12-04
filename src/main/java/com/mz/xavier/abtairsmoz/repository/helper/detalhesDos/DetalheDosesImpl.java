@@ -69,7 +69,25 @@ public class DetalheDosesImpl implements DetalheDosesQueries{
 			if(isActorPresent(filtro)) {
 				criteria.add(Restrictions.eq("actor", filtro.getActor()));
 			}
+			
+			if(isDistritoPresente(filtro)) {
+				criteria.add(Restrictions.eq("distrito", filtro.getDistrito()));
+			}
+			
+			if(isLocalidadePresente(filtro)) {
+				criteria.add(Restrictions.eq("localidade", filtro.getLocalidade()));
+			}
 		} 
+	}
+
+
+	private boolean isLocalidadePresente(DetalheDosFilter filtro) {
+		return filtro.getLocalidade() != null && filtro.getLocalidade().getCodigo() != null;
+	}
+
+
+	private boolean isDistritoPresente(DetalheDosFilter filtro) {
+		return filtro.getDistrito() != null && filtro.getDistrito().getCodigo() != null;
 	}
 
 	private boolean isActorPresent(DetalheDosFilter filtro) {

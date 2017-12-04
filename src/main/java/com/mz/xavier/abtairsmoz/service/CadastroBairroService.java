@@ -30,7 +30,8 @@ public class CadastroBairroService {
 	
 	@Transactional
 	public void salvar(Bairro bairro) {
-		Optional<Bairro> bairroExistente = bairros.findByNomeIgnoreCase(bairro.getNome());
+		//Optional<Bairro> bairroExistente = bairros.findByNomeIgnoreCase(bairro.getNome());
+		Optional<Bairro> bairroExistente = bairros.findByNomeAndLocalidade(bairro.getNome(),bairro.getLocalidade());
 		if(bairroExistente.isPresent() && bairro.isNovo()) {
 			throw new CadastroNomeBairroException("Esse nome ja foi cadastrado");
 		}

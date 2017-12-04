@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.mz.xavier.abtairsmoz.model.Bairro;
+import com.mz.xavier.abtairsmoz.model.Localidade;
 import com.mz.xavier.abtairsmoz.repository.helper.bairro.BairrosQueries;
 
 
@@ -22,5 +23,6 @@ import com.mz.xavier.abtairsmoz.repository.helper.bairro.BairrosQueries;
 public interface Bairros extends JpaRepository<Bairro, Long>, BairrosQueries{
 	public Optional<Bairro> findByNomeIgnoreCase(String nome);
 	public List<Bairro> findByLocalidadeCodigo(Long codigoLocalidade);
+	public Optional<Bairro> findByNomeAndLocalidade(String nome, Localidade localidade);
 
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -95,7 +96,7 @@ public class DetalhesDosController {
 	
 	@GetMapping
 	public ModelAndView pesquisar(DetalheDosFilter detalheDosFilter, BindingResult result, 
-			 @PageableDefault(size = 5) Pageable pageable, HttpServletRequest httpServletRequest) {
+			 @PageableDefault(size = 100) Pageable pageable, HttpServletRequest httpServletRequest) {
 		ModelAndView mv = new ModelAndView("dos/PesquisaDetalhesDos");
 		 mv.addObject("actores", actores.listarSupervisores());
 		 mv.addObject("distritos", distritos.findAll());
@@ -109,6 +110,12 @@ public class DetalhesDosController {
 	}
 	
 
+	@GetMapping("/{codigo}")
+	public ModelAndView editar(@PathVariable Long codigo) {
+		DetalheDos detalheDos = detalheDoses.findOne(codigo);
+		ModelAndView mv = novo(detalheDos);
+		return mv;
+	}
 	
 	
 	

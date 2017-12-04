@@ -91,7 +91,7 @@ public class ActorsController {
 
 	@GetMapping
 	public ModelAndView pesquisar(ActorFilter actorFilter, BindingResult result, 
-			@PageableDefault(size = 5) Pageable pageable, HttpServletRequest httpServletRequest){
+			@PageableDefault(size = 100) Pageable pageable, HttpServletRequest httpServletRequest){
 		ModelAndView mv = new ModelAndView("actor/PesquisaActores");
 		mv.addObject("actorTypes", actorTypes.findAll());
 		mv.addObject("sexos", Gender.values());
