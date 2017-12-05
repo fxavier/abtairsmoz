@@ -1,7 +1,7 @@
 package com.mz.xavier.abtairsmoz.repository.helper.totaisTLDos;
 
 import java.time.LocalDate;
-
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -10,6 +10,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -17,7 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mz.xavier.abtairsmoz.model.Actor;
-import com.mz.xavier.abtairsmoz.model.Bairro;
+import com.mz.xavier.abtairsmoz.model.DetalheDos;
 import com.mz.xavier.abtairsmoz.model.TotaisTlDos;
 import com.mz.xavier.abtairsmoz.repository.filter.TotalTLDosFilter;
 import com.mz.xavier.abtairsmoz.repository.paginacao.PaginacaoUtil;
@@ -53,18 +54,7 @@ public class TotalTLDosesImpl implements TotalTLDosesQueries{
 					.getSingleResult();
 	}
 	
-	@Override
-	public Long obtrCodigoTotalDoses(LocalDate data, Bairro bairro) {
-		return  manager.createQuery(
-				"select codigo from TotaisTlDos  where data = :data and bairro = :bairro" , Long.class)
-		        .setParameter("data", data)
-		        .setParameter("bairro", bairro)
-		        .getSingleResult();
-	}
-
-
-
-
+	
 	@Override
 	public Actor findUltimoBSTL() {
 		
@@ -86,6 +76,39 @@ public class TotalTLDosesImpl implements TotalTLDosesQueries{
 		paginacaoUtil.preparar(criteria, pageable);
 		adicionarFiltro(filtro, criteria);
 		return new PageImpl<>(criteria.list(), pageable, total(filtro));
+	}
+		
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional(readOnly = true)
+	public Optional<TotaisTlDos> obterUmTotal(DetalheDos dDos) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(TotaisTlDos.class);
+		adicionarParametros(dDos, criteria);
+		return (Optional<TotaisTlDos>) criteria.uniqueResult();
+	}
+
+	private void adicionarParametros(DetalheDos dDos, Criteria criteria) {
+		if(dDos != null) {
+			if(dDos.getData() != null) {
+				criteria.add(Restrictions.eq("data", dDos.getData()));
+			}
+			
+			if(dDos.getDistrito() != null && dDos.getDistrito().getCodigo() != null) {
+				criteria.add(Restrictions.eq("distrito", dDos.getDistrito()));
+			}
+			
+			if(dDos.getLocalidade() != null && dDos.getLocalidade().getCodigo() != null) {
+				criteria.add(Restrictions.eq("localidade", dDos.getLocalidade()));
+			}
+			
+			if(dDos.getBairro() != null && dDos.getDistrito().getCodigo() != null) {
+				criteria.add(Restrictions.eq("bairro", dDos.getBairro()));
+			}
+			
+			if(dDos.getTeamLeaderOuChefeBrigada() != null && dDos.getTeamLeaderOuChefeBrigada().getCodigo() != null) {
+				criteria.add(Restrictions.eq("teamLeaderOuChefeBrigada", dDos.getTeamLeaderOuChefeBrigada()));
+			}
+		}
 	}
 	
 	private Long total(TotalTLDosFilter filtro) {
@@ -140,6 +163,20 @@ public class TotalTLDosesImpl implements TotalTLDosesQueries{
 	private boolean isDistritoPresente(TotalTLDosFilter filtro) {
 		return filtro.getDistrito() != null && filtro.getDistrito().getCodigo() != null;
 	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public TotaisTlDos buscarComRelacionamentos(Long codigo) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(TotaisTlDos.class);
+		criteria.createAlias("distrito","d", JoinType.INNER_JOIN);
+		criteria.createAlias("localidade", "l", JoinType.INNER_JOIN);
+		criteria.createAlias("bairro", "b", JoinType.INNER_JOIN);
+		criteria.createAlias("teamLeaderOuChefeBrigada", "tl", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("codigo", codigo));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return (TotaisTlDos) criteria.uniqueResult();
+	}
+
 
 	
 }

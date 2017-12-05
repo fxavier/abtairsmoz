@@ -15,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 
@@ -52,11 +51,7 @@ public class DetalheDos implements Serializable{
 	@NotNull(message = "A Localidade é obrigatória")
 	private Localidade localidade;
 	
-	/*@Transient
-	@NotNull(message = "O tipo do lider é obrigatório")
-	private ActorType actorType;
-	*/
-	
+		
 	@ManyToOne
 	@JoinColumn(name = "codigo_tlOusupBrigada")
 	@NotNull(message = "O Nome do lider é obrigatório")

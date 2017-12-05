@@ -79,7 +79,7 @@ public class TotaisDosController {
 
 		totaisTlDos.setUUID(UUID.randomUUID().toString());
 		totalDosService.salvar(totaisTlDos);
-		attributes.addFlashAttribute("Mensagem", "Totais salvos com sucesso");
+		attributes.addFlashAttribute("mensagem", "Totais salvos com sucesso");
 		return new ModelAndView("redirect:/totaisDos/novo");
 	}
 	
@@ -103,6 +103,7 @@ public class TotaisDosController {
 	public ModelAndView editar(@PathVariable Long codigo) {
 		TotaisTlDos totaisTlDos = totalDoses.findOne(codigo);
 		ModelAndView mv = novo(totaisTlDos);
+		mv.addObject(totaisTlDos);
 		return mv;
 	}
 

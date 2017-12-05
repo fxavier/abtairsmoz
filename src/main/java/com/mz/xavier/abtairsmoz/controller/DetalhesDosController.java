@@ -3,6 +3,7 @@
  */
 package com.mz.xavier.abtairsmoz.controller;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mz.xavier.abtairsmoz.controller.page.PageWrapper;
 import com.mz.xavier.abtairsmoz.model.DetalheDos;
+import com.mz.xavier.abtairsmoz.model.TotaisTlDos;
 import com.mz.xavier.abtairsmoz.repository.ActorTypes;
 import com.mz.xavier.abtairsmoz.repository.Actores;
 import com.mz.xavier.abtairsmoz.repository.Bairros;
@@ -80,8 +82,14 @@ public class DetalhesDosController {
 		if(result.hasErrors()) {
 			return novo(detalhesTlDos);
 		}
-		
-		Long codigoToatais = totalDoses.obtrCodigoTotalDoses(detalhesTlDos.getData(),detalhesTlDos.getBairro());
+		   Long codigoToatais = null;
+	 	    Optional<TotaisTlDos> tlDos = totalDoses.obterUmTotal(detalhesTlDos);
+	 	    if(tlDos.isPresent()) {
+		     codigoToatais = tlDos.get().getCodigo();
+	 	    } else {
+	 	    	
+	 	    	codigoToatais = totalDoses.findLastCodigo();
+	 	    }
 			detalhesTlDos.setUUID(UUID.randomUUID().toString());
 			detalhesTlDos.setCodigoTotalDos(codigoToatais);
 			detalheDoses.save(detalhesTlDos);
@@ -114,6 +122,7 @@ public class DetalhesDosController {
 	public ModelAndView editar(@PathVariable Long codigo) {
 		DetalheDos detalheDos = detalheDoses.findOne(codigo);
 		ModelAndView mv = novo(detalheDos);
+		mv.addObject(detalheDos);
 		return mv;
 	}
 	

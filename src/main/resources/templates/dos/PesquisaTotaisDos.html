@@ -106,6 +106,7 @@
 		                      <th>O Roceador esta pulverizando com 45 cm de distancia do bico a parede?</th>
 		                      <th>O Roceador esta a manter a velocidade correcta de pulverização. Isto é,  2 metros de superfície da parede vertical em 5 segundos?</th>
 		                      <th>Existe uma sobreposição de 5 cm  em cada faixa consecutiva?</th>
+		                      <th >Editar</th>
 		                     </tr>
 	                   </thead>
 	                     
@@ -136,7 +137,9 @@
 	                      <th>Sim</th>
 	                      <th>Não</th>
 	                      <th>Sim</th>
-	                      <th>Não</th>	                      
+	                      <th>Não</th>	
+	                      
+	                                          
 	                    </tr>
 	                  </thead>
 	                    <tbody>
@@ -163,17 +166,17 @@
 						<td th:text="${totaisTlDos.existeSubreposicao5cmNao}"></td>
 						
 	                
-	               <!--  <td>
+	                <td>
 							<a class="btn  btn-link  btn-xs js-tooltip" title="Editar" 
 							    th:href="@{/totaisDos/{codigo}(codigo=${totaisTlDos.codigo})}"> 
 								<i class="glyphicon glyphicon-pencil"></i>
 							</a>
-							<a class="btn  btn-link  btn-xs js-tooltip js-exclusao-btn" title="Excluir" href="#" 
+							<!-- <a class="btn  btn-link  btn-xs js-tooltip js-exclusao-btn" title="Excluir" href="#" 
 							   data:url="@{/detalhesDos/{codigo}(codigo=${detalheDos.codigo})}"
 							   data:objeto="${detalheDos.nome}">
 								<i class="glyphicon glyphicon-remove"></i>
-							</a>
-						</td> -->
+							</a> -->
+						</td>
 					</tr>
 					<tr th:if="${pagina.vazia}">
 					   <td colspan="22">Nenhum dado encontrado</td>
