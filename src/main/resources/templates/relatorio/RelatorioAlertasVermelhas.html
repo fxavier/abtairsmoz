@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/LayoutPadrao}">
+
+<head>
+	<title>Relatório - Alertas Vermelhas por Distrito</title>
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<h1>
+				Relatório de alertas Vermelhas por distrito
+			</h1>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="POST" th:object="${periodoRelatorio}" th:action="@{/relatorios/alertasVermelhas}" target="_blank">
+			<th:block th:include="fragments/MensagensErroValidacao"></th:block>
+			
+			<div class="row">
+				<div class="form-group  col-sm-12">
+					<label for="dataInicio">Data de Supervisao directa</label>
+					<div class="form-inline">
+						<input type="text" class="form-control  aw-form-control-inline-sm  js-date" 
+							id="dataInicio" th:field="*{dataInicio}" 
+							data-provide="datepicker" data-date-orientation="bottom" data-date-language="pt-BR"
+					        data-date-today-highlight="true" data-date-autoclose="true" autocomplete="off"/>
+						<label for="a" class="aw-form-label-between">a</label>
+						<input type="text" class="form-control  aw-form-control-inline-sm  js-date" 
+							id="dataFim" th:field="*{dataFim}" 
+							data-provide="datepicker" data-date-orientation="bottom" data-date-language="pt-BR"
+					        data-date-today-highlight="true" data-date-autoclose="true" autocomplete="off"/>
+					</div>
+				</div>
+				
+				
+			</div>
+			
+			 <div class="row">	
+			 
+			 		  
+				<div class="form-group  col-sm-8  bw-required" th:classappend="${#fields.hasErrors('distrito')} ? has-error">
+					<label for="distrito" class="control-label">Distrito</label>
+					<input type="text" class="form-control" id="distrito" autofocus="autofocus" th:field="*{distrito}"/>
+				</div>
+			  </div>
+			  
+				
+			<button type="submit" class="btn  btn-primary">Emitir</button>
+		</form>
+	</div>
+</section>
+
+</html>

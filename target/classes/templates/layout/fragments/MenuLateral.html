@@ -31,12 +31,12 @@
 			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/empresas.+}">
 			            	<a th:href="@{/usuarios/novo}">Usuarios</a>
 			            </li>
-			           <li class="aw-menu__item  aw-menu__item--link">
+			          <!--  <li class="aw-menu__item  aw-menu__item--link">
 			            	<a th:href="@{/motivos}">Motivos</a>
 			            </li>
 			            <li class="aw-menu__item  aw-menu__item--link">
 			            	<a th:href="@{/motivoNaoAceitacaos/novo}">Motivos de nao aceitacao</a>
-			            </li>
+			            </li> -->
 			            <li class="aw-menu__item  aw-menu__item--link">
 			               <a th:href="@{/distritos}">Distritos</a>
 			             </li>
@@ -112,28 +112,7 @@
           			</ul>
         		</li> -->
 
-        		<li class="aw-menu__item ">
-          			<a href="#">
-            			<i class="fa  fa-fw  fa-database"></i><span>Cadastros</span>
-            			<i class="aw-menu__navigation-icon  fa"></i>
-          			</a>
-<!-- 
-          			<ul class="aw-menu__list  aw-menu__list--sublist">
-			            
-			            
-			            <li class="aw-menu__item  aw-menu__item--link">
-			               <a th:href="@{/distritos/novo}">Distritos</a>
-			             </li>
-			             <li class="aw-menu__item  aw-menu__item--link">
-			               <a th:href="@{/localidades/novo}">Localidades</a>
-			             </li>
-			             <li class="aw-menu__item  aw-menu__item--link">
-			               <a th:href="@{/bairros/novo}">Bairros</a>
-			             </li>
-			            			            
-          			</ul> -->
-        		</li>
-
+        		
                 <li class="aw-menu__item">
           			<a href="#">
             			<i class="fa  fa-fw  fa-file-pdf-o"></i><span>Relatorios</span>
@@ -142,7 +121,7 @@
 
           			<ul class="aw-menu__list  aw-menu__list--sublist">
 			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/relatorios.*}">
-			            	<a th:href="@{/relatorios/vendasEmitidas}"></a>
+			            	<a th:href="@{/relatorios/alertasVermelhas}">Alertas vermelhas</a>
 			            	
 			            </li>
           			</ul>

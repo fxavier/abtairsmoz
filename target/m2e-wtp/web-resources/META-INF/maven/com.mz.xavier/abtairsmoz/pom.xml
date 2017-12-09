@@ -80,6 +80,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		
 		<!-- Apache Commons DBCP -->
 		<commons-dbcp2.version>2.1.1</commons-dbcp2.version>
+		<!-- Apache POI para excel -->
+<!-- 		<poi.version>3.17</poi.version> -->
+		
+		<!-- <poi-ooxml.version>3.17</poi-ooxml.version> -->
 	</properties>
 
 	<build>
@@ -350,12 +354,14 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
             <scope>compile</scope>
         </dependency>
         
+        <!-- JasperReport -->
         <dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
 			<version>${jasperreports.version}</version>
 			<scope>compile</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports-fonts</artifactId>
@@ -371,6 +377,18 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 			<scope>compile</scope>
 		</dependency>
 		
+		<!-- Apache POI -->
+		<!-- <dependency>
+		  <groupId>org.apache.poi</groupId>
+		  <artifactId>poi</artifactId>
+		  <version>${poi.version}</version>
+        </dependency> -->
+		
+		<!-- <dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi-ooxml.version}</version>
+		</dependency> -->
 		
 	</dependencies>
 
