@@ -1,6 +1,7 @@
 package com.mz.xavier.abtairsmoz.repository.helper.totaisTLDos;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
@@ -17,6 +18,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mz.xavier.abtairsmoz.dto.AlertasVermelhas;
+import com.mz.xavier.abtairsmoz.dto.AlertasVermelhasDistrito;
+import com.mz.xavier.abtairsmoz.dto.SupervisoesPorMes;
 import com.mz.xavier.abtairsmoz.model.Actor;
 import com.mz.xavier.abtairsmoz.model.DetalheDos;
 import com.mz.xavier.abtairsmoz.model.TotaisTlDos;
@@ -117,6 +121,55 @@ public class TotalTLDosesImpl implements TotalTLDosesQueries{
 		criteria.setProjection(Projections.rowCount());		
 		return (Long) criteria.uniqueResult();
 	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public TotaisTlDos buscarComRelacionamentos(Long codigo) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(TotaisTlDos.class);
+		criteria.createAlias("distrito","d", JoinType.INNER_JOIN);
+		criteria.createAlias("localidade", "l", JoinType.INNER_JOIN);
+		criteria.createAlias("bairro", "b", JoinType.INNER_JOIN);
+		criteria.createAlias("teamLeaderOuChefeBrigada", "tl", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("codigo", codigo));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return (TotaisTlDos) criteria.uniqueResult();
+	}
+	
+	@Override
+	public List<AlertasVermelhasDistrito> totalPorDistrito() {
+		@SuppressWarnings("unchecked")
+		List<AlertasVermelhasDistrito> totalAlertasVermelhas = manager.createNamedQuery("totais.porDistrito").getResultList();
+		return totalAlertasVermelhas;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AlertasVermelhas> totalPorIndicador() {
+		List<AlertasVermelhas> totalAlertasPorIndicador = manager.createNamedQuery("total.porIndicador")
+				.getResultList();
+		return totalAlertasPorIndicador;
+	}
+
+	@Override
+	public List<SupervisoesPorMes> totalPorSupervisao() {
+		@SuppressWarnings("unchecked")
+		List<SupervisoesPorMes> totalPorMes = manager.createNamedQuery("total.porSupervisao")
+				.getResultList();
+		
+
+		LocalDate hoje = LocalDate.now();
+		for (int i = 1; i <= 6; i++) {
+			String mesIdeal = String.format("%d/%02d", hoje.getYear(), hoje.getMonthValue());
+			
+			boolean possuiMes = totalPorMes.stream().filter(v -> v.getMes().equals(mesIdeal)).findAny().isPresent();
+			if (!possuiMes) {
+				totalPorMes.add(i - 1, new SupervisoesPorMes(mesIdeal, 0));
+			}
+			
+			hoje = hoje.minusMonths(1);
+		}
+		return totalPorMes;
+	}
 
 	private void adicionarFiltro(TotalTLDosFilter filtro, Criteria criteria) {
 		
@@ -164,19 +217,7 @@ public class TotalTLDosesImpl implements TotalTLDosesQueries{
 		return filtro.getDistrito() != null && filtro.getDistrito().getCodigo() != null;
 	}
 
-	@Transactional(readOnly = true)
-	@Override
-	public TotaisTlDos buscarComRelacionamentos(Long codigo) {
-		Criteria criteria = manager.unwrap(Session.class).createCriteria(TotaisTlDos.class);
-		criteria.createAlias("distrito","d", JoinType.INNER_JOIN);
-		criteria.createAlias("localidade", "l", JoinType.INNER_JOIN);
-		criteria.createAlias("bairro", "b", JoinType.INNER_JOIN);
-		criteria.createAlias("teamLeaderOuChefeBrigada", "tl", JoinType.INNER_JOIN);
-		criteria.add(Restrictions.eq("codigo", codigo));
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		return (TotaisTlDos) criteria.uniqueResult();
-	}
-
+	
 
 	
 }

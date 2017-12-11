@@ -4,60 +4,115 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd"
 	version="2.1">
 	
-	<named-native-query name="Vendas.totalPorMes" result-set-mapping="totalPorMesMapping">
+	<named-native-query name="totais.porDistrito" result-set-mapping="porDistritoMapping">
 		<query>
-			select date_format(data_criacao, '%Y/%m') mes
-				 , count(*) total
-  			from venda
-  			where data_criacao > DATE_SUB(NOW(), INTERVAL 6 MONTH)
-  			  and status = 'EMITIDA'
-			group by date_format(data_criacao, '%Y/%m')   
-			order by date_format(data_criacao, '%Y/%m') desc
+			SELECT v.Distrito,(
+				v.existeSubreposicao5cmNao
+				+ v.existeVazamentoBombaSim 
+				+v.SOPEnxaugou3vezesNao
+				+v.SOPMantemVelocCorrectaNao
+				+v.SOPMixFor75Nao
+				+v.SOPPulvComBombaComCntFluxoNao
+				+v.SOPPulvComDist45cmParedeNao
+				+v.SOPTemEPICompletoNao
+				+v.todosPertencesForaCasaNao
+				+v.todosPertencesNTiradosCobertosNao ) AS total
+				FROM
+				(SELECT d.nome AS Distrito
+				,SUM(td.SOPMixFor75Nao) AS SOPMixFor75Nao
+				,SUM(td.SOPEnxaugou3vezesNao) AS SOPEnxaugou3vezesNao
+				,SUM(td.SOPTemEPICompletoNao) AS SOPTemEPICompletoNao
+				,SUM(td.SOPPulvComBombaComCntFluxoNao) SOPPulvComBombaComCntFluxoNao
+				,SUM(td.todosPertencesForaCasaNao) AS todosPertencesForaCasaNao
+				,SUM(td.todosPertencesNTiradosCobertosNao) AS todosPertencesNTiradosCobertosNao
+				,SUM(td.existeVazamentoBombaSim) AS existeVazamentoBombaSim
+				,SUM(td.SOPPulvComDist45cmParedeNao) AS SOPPulvComDist45cmParedeNao
+				,SUM(td.SOPMantemVelocCorrectaNao) AS SOPMantemVelocCorrectaNao
+				,SUM(td.existeSubreposicao5cmNao) AS existeSubreposicao5cmNao
+				FROM totais_tldos td
+				INNER JOIN distrito d ON d.codigo=td.codigo_distrito
+				GROUP BY d.nome
+				) AS v
+				GROUP BY v.Distrito
+	    </query>
+	</named-native-query>
+		
+     <named-native-query name="total.porIndicador" result-set-mapping="porIndicadorMapping">
+		<query>
+			SELECT
+					SUM(v.SOPMixFor75Nao) AS SOPMixFor75Nao
+					,SUM(v.SOPEnxaugou3vezesNao) AS SOPEnxaugou3vezesNao
+					,SUM(v.SOPTemEPICompletoNao) AS SOPTemEPICompletoNao
+					,SUM(v.SOPPulvComBombaComCntFluxoNao) AS SOPPulvComBombaComCntFluxoNao
+					,SUM(v.todosPertencesForaCasaNao) AS todosPertencesForaCasaNao
+					,SUM(v.existeVazamentoBombaSim) AS existeVazamentoBombaSim
+					,SUM(v.existeSubreposicao5cmNao) AS existeSubreposicao5cmNao
+					,SUM(v.SOPPulvComDist45cmParedeNao) AS SOPPulvComDist45cmParedeNao
+					,SUM(v.SOPMantemVelocCorrectaNao) AS SOPMantemVelocCorrectaNao
+					,SUM(v.todosPertencesNTiradosCobertosNao) AS todosPertencesNTiradosCobertosNao
+			 FROM
+					(SELECT 
+					SUM(td.SOPMixFor75Nao) AS SOPMixFor75Nao
+					,SUM(td.SOPEnxaugou3vezesNao) AS SOPEnxaugou3vezesNao
+					,SUM(td.SOPTemEPICompletoNao) AS SOPTemEPICompletoNao
+					,SUM(td.SOPPulvComBombaComCntFluxoNao) SOPPulvComBombaComCntFluxoNao
+					,SUM(td.todosPertencesForaCasaNao) AS todosPertencesForaCasaNao
+					,SUM(td.todosPertencesNTiradosCobertosNao) AS todosPertencesNTiradosCobertosNao
+					,SUM(td.existeVazamentoBombaSim) AS existeVazamentoBombaSim
+					,SUM(td.SOPPulvComDist45cmParedeNao) AS SOPPulvComDist45cmParedeNao
+					,SUM(td.SOPMantemVelocCorrectaNao) AS SOPMantemVelocCorrectaNao
+					,SUM(td.existeSubreposicao5cmNao) AS existeSubreposicao5cmNao
+					FROM totais_tldos td
+					INNER JOIN distrito d ON d.codigo=td.codigo_distrito
+					GROUP BY d.nome
+                    ) AS v
 	    </query>
 	</named-native-query>
 	
-	<named-native-query name="Vendas.porOrigem" result-set-mapping="porOrigemMapping">
+	<named-native-query name="total.porSupervisao" result-set-mapping="porSupervisaoMapping">
 		<query>
-			select date_format(v.data_criacao, '%Y/%m') mes
-				 , group_concat(distinct (select coalesce(sum(i.quantidade), 0) 
-				     from item_venda i
-				        , cerveja c
-				        , venda v1
-				     where i.codigo_venda = v1.codigo 
-				       and i.codigo_cerveja = c.codigo
-				       and c.origem = 'NACIONAL'
-				       and date_format(v1.data_criacao, '%Y/%m') = date_format(v.data_criacao, '%Y/%m')
-				   )) total_nacional
-				 , group_concat(distinct (select coalesce(sum(i.quantidade), 0)
-				     from item_venda i
-				        , cerveja c
-				        , venda v1
-				     where i.codigo_venda = v1.codigo 
-				       and i.codigo_cerveja = c.codigo
-				       and c.origem = 'INTERNACIONAL'
-				       and date_format(v1.data_criacao, '%Y/%m') = date_format(v.data_criacao, '%Y/%m')
-				   )) total_internacional
-			 from venda v
-			 where v.data_criacao > DATE_SUB(NOW(), INTERVAL 6 MONTH)
-			   and status = 'EMITIDA'
-			   group by date_format(v.data_criacao, '%Y/%m')  
-			   order by date_format(v.data_criacao, '%Y/%m') desc
+			SELECT
+				date_format(td.data, '%Y/%m') AS mes
+				,COUNT(td.codigo) AS total
+				FROM totais_tldos td
+				WHERE td.data > DATE_SUB(NOW(),INTERVAL 3 MONTH)
+				GROUP BY date_format(td.data, '%Y/%m')
+				ORDER BY date_format(td.data, '%Y/%m') DESC
 	    </query>
-	</named-native-query>
+	</named-native-query>		
+			
 	
-	<sql-result-set-mapping name="totalPorMesMapping">
-		<constructor-result target-class="com.algaworks.brewer.dto.VendaMes">
+	<sql-result-set-mapping name="porDistritoMapping">
+		<constructor-result target-class="com.mz.xavier.abtairsmoz.dto.AlertasVermelhasDistrito">
+			<column name="distrito" class="java.lang.String"/>
+			<column name="total" class="java.lang.Integer"/>
+			
+		</constructor-result>
+	</sql-result-set-mapping>
+	
+	<sql-result-set-mapping name="porIndicadorMapping">
+		<constructor-result target-class="com.mz.xavier.abtairsmoz.dto.AlertasVermelhas">
+			
+			<column name="sopMixFor75Nao" class="java.lang.Integer"/>
+			<column name="sopEnxaugou3vezesNao" class="java.lang.Integer"/>
+			<column name="sopTemEPICompletoNao" class="java.lang.Integer"/>
+			<column name="sopPulvComBombaComCntFluxoNao" class="java.lang.Integer"/>
+			<column name="todosPertencesForaCasaNao" class="java.lang.Integer"/>
+			<column name="todosPertencesNTiradosCobertosNao" class="java.lang.Integer"/>
+			<column name="existeVazamentoBombaSim" class="java.lang.Integer"/>
+			<column name="sopPulvComDist45cmParedeNao" class="java.lang.Integer"/>
+			<column name="sopMantemVelocCorrectaNao" class="java.lang.Integer"/>
+			<column name="existeSubreposicao5cmNao" class="java.lang.Integer"/>
+			
+		</constructor-result>
+	</sql-result-set-mapping>
+	
+	
+	<sql-result-set-mapping name="porSupervisaoMapping">
+		<constructor-result target-class="com.mz.xavier.abtairsmoz.dto.SupervisoesPorMes">
 			<column name="mes" class="java.lang.String"/>
 			<column name="total" class="java.lang.Integer"/>
+			
 		</constructor-result>
 	</sql-result-set-mapping>
-	
-	<sql-result-set-mapping name="porOrigemMapping">
-		<constructor-result target-class="com.algaworks.brewer.dto.VendaOrigem">
-			<column name="mes" class="java.lang.String"/>
-			<column name="total_nacional" class="java.lang.Integer"/>
-			<column name="total_internacional" class="java.lang.Integer"/>
-		</constructor-result>
-	</sql-result-set-mapping>
-	
 </entity-mappings>

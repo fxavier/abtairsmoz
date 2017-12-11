@@ -33,6 +33,7 @@ import com.mz.xavier.abtairsmoz.repository.Distritos;
 import com.mz.xavier.abtairsmoz.repository.Localidades;
 import com.mz.xavier.abtairsmoz.repository.TotalTLDoses;
 import com.mz.xavier.abtairsmoz.repository.filter.DetalheDosFilter;
+import com.mz.xavier.abtairsmoz.service.exception.CadastroDetalheException;
 
 
 /**
@@ -92,7 +93,13 @@ public class DetalhesDosController {
 	 	    }
 			detalhesTlDos.setUUID(UUID.randomUUID().toString());
 			detalhesTlDos.setCodigoTotalDos(codigoToatais);
+			detalhesTlDos.setReferencia(detalhesTlDos.getData()+detalhesTlDos.getBairro().getNome()+detalhesTlDos.getTeamLeaderOuChefeBrigada().getNome());
+			try {
 			detalheDoses.save(detalhesTlDos);
+			}catch(CadastroDetalheException e) {
+				result.rejectValue("referencia", e.getMessage(), e.getMessage());
+				return novo(detalhesTlDos);
+			}
 			attributes.addFlashAttribute("mensagem", "Detalhe lancado com sucesso");
 			
 		

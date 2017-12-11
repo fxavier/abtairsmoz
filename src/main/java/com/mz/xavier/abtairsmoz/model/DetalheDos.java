@@ -35,6 +35,9 @@ public class DetalheDos implements Serializable{
 	
 	private String UUID;
 	
+	@Column(name = "referencia_detalhes")
+	private String referencia;
+	
 	@Column(name = "codigo_totalDos")
 	private Long codigoTotalDos;
 	
@@ -310,6 +313,17 @@ public class DetalheDos implements Serializable{
 		this.roceador = roceador;
 	}
 	
+	
+
+	public String getReferencia() {
+		return referencia;
+	}
+
+
+	public void setReferencia(String referencia) {
+		this.referencia = referencia;
+	}
+
 
 	@Override
 	public int hashCode() {

@@ -37,6 +37,9 @@ public class TotaisTlDos implements Serializable{
 	
 	private String UUID;
 	
+	@Column(name = "referencia_totais")
+	private String referencia;
+	
 	@NotNull(message = "A data é obrigatória")
 	private LocalDate data;
 	
@@ -414,6 +417,21 @@ public class TotaisTlDos implements Serializable{
 	
 	
 
+	public String getReferencia() {
+		return referencia;
+	}
+
+
+	public void setReferencia(String referencia) {
+		this.referencia = referencia;
+	}
+
+	
+	public boolean isNovo() {
+		return this.codigo == null;
+	}
+	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -438,7 +456,7 @@ public class TotaisTlDos implements Serializable{
 			return false;
 		return true;
 	}
-	
+
 	
 
 }
